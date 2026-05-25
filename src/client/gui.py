@@ -24,7 +24,6 @@ if __package__ in (None, ""):
     sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
 
 from src.client.network import NetClient
-from src.client.settings import load_online_defaults
 from src.common.protocol import Frame, MsgType
 
 
@@ -1051,17 +1050,12 @@ class App:
 # ============================================================
 
 def main() -> int:
-    defaults = load_online_defaults()
     parser = argparse.ArgumentParser(description="GoBang Tk Client")
-    parser.add_argument("--host", default=str(defaults.get("host", "127.0.0.1")))
-    parser.add_argument("--port", type=int, default=int(defaults.get("port", 9527)))
-    if getattr(sys, "frozen", False):
-        base = os.path.dirname(sys.executable)
-    else:
-        base = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+    parser.add_argument("--host", default="127.0.0.1")
+    parser.add_argument("--port", type=int, default=9527)
+    base = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
     parser.add_argument("--log-dir", default=os.path.join(base, "logs"))
     args = parser.parse_args()
-    os.makedirs(args.log_dir, exist_ok=True)
 
     app = App(args.host, args.port, args.log_dir)
     app.run()

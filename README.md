@@ -73,18 +73,9 @@ gobang_py/
 
 ---
 
-## 4. 公网联机 / 打包发给同学
+## 4. 一键运行 (Windows)
 
-- 默认公网配置：`config/online.json`（当前为 `140.143.202.203:9527`）
-- 本机连公网：双击 `run_client_online.bat`
-- 打包 exe：双击 `build_release.bat`，产物在 `release/` 文件夹
-- 详细说明见 [DEPLOY_PUBLIC.md](./DEPLOY_PUBLIC.md)
-
-> **注意**：这是桌面 TCP 客户端，**不能**用浏览器打开网址直接下棋；可部署 `web/landing/index.html` 作下载说明页。
-
-## 5. 一键运行 (Windows)
-
-### 5.1 启动服务端
+### 4.1 启动服务端
 
 双击 `run_server.bat`, 或在 PowerShell:
 
@@ -95,7 +86,7 @@ cd gobang_py
 
 看到 `GoBang server listening on 0.0.0.0:9527` 即成功. 服务端默认监听 **9527/tcp**.
 
-### 5.2 启动两个客户端
+### 4.2 启动两个客户端
 
 双击 **两次** `run_client.bat`, 或在 PowerShell 跑两次:
 
@@ -113,7 +104,7 @@ cd gobang_py
 
 > 想本机模拟多人对战, 直接多开 `run_client.bat` 即可; 想多机对战, 把服务端机的防火墙 9527/tcp 放行, 客户端填服务端的局域网 IP.
 
-### 5.3 一键回归测试 (不打开 GUI)
+### 4.3 一键回归测试 (不打开 GUI)
 
 ```powershell
 .\run_smoketest.bat
