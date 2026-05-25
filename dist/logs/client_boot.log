@@ -1,0 +1,5 @@
+2026-05-25 16:01:39 [INFO] connection closed
+2026-05-25 16:02:27 [INFO] connected to 140.143.202.203:9527
+2026-05-25 16:02:27 [INFO] -> C2S_LOGIN seq=1 data={'username': 'alice', 'password': 'pw1'}
+2026-05-25 16:02:27 [INFO] <- S2C_LOGIN_RESP seq=1 data={'ok': True, 'uid': 1, 'username': 'alice', 'score': 1090, 'total': 21, 'win': 12}
+2026-05-25 16:03:48 [INFO] connection closed

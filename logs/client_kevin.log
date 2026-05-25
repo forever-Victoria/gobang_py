@@ -1,0 +1,38 @@
+2026-05-22 13:36:30 [INFO] <- S2C_LOBBY_INFO seq=0 data={'online': ['alice', 'bob', 'cathy', 'kevin'], 'online_count': 4, 'queue_size': 0, 'active_rooms': [{'room_id': 5, 'black': 'alice', 'white': 'bob', 'move_count': 18, 'started_at': 1779427895, 'observer_count': 0}]}
+2026-05-22 13:36:35 [INFO] -> C2S_MATCH_START seq=3 data={}
+2026-05-22 13:36:35 [INFO] <- S2C_LOBBY_INFO seq=0 data={'online': ['alice', 'bob', 'cathy', 'kevin'], 'online_count': 4, 'queue_size': 1, 'active_rooms': [{'room_id': 5, 'black': 'alice', 'white': 'bob', 'move_count': 18, 'started_at': 1779427895, 'observer_count': 0}]}
+2026-05-22 13:36:51 [INFO] -> C2S_RANK_LIST seq=4 data={'limit': 10}
+2026-05-22 13:36:51 [INFO] <- S2C_RANK_LIST seq=4 data={'items': [{'rank': 1, 'username': 'alice', 'score': 1120, 'total': 18, 'win': 11}, {'rank': 2, 'username': 'kevin', 'score': 1000, 'total': 0, 'win': 0}, {'rank': 3, 'username': 'cathy', 'score': 970, 'total': 5, 'win': 2}, {'rank': 4, 'username': 'bob', 'score': 820, 'total': 12, 'win': 3}]}
+2026-05-22 13:37:52 [INFO] <- S2C_MATCH_OK seq=0 data={'room_id': 6, 'board_size': 15, 'you': 'kevin', 'opponent': {'username': 'cathy', 'score': 970}, 'your_color': 2, 'turn_color': 1}
+2026-05-22 13:38:01 [INFO] <- S2C_CHAT_BCAST seq=0 data={'from': 'cathy', 'text': '11'}
+2026-05-22 13:38:05 [INFO] -> C2S_CHAT seq=5 data={'text': '新房间'}
+2026-05-22 13:38:05 [INFO] <- S2C_CHAT_BCAST seq=0 data={'from': 'kevin', 'text': '新房间'}
+2026-05-22 13:38:18 [INFO] <- S2C_CHAT_BCAST seq=0 data={'from': 'cathy', 'text': '不错不错'}
+2026-05-22 13:38:25 [INFO] -> C2S_CHAT seq=6 data={'text': '我再注册一个观战一下'}
+2026-05-22 13:38:25 [INFO] <- S2C_CHAT_BCAST seq=0 data={'from': 'kevin', 'text': '我再注册一个观战一下'}
+2026-05-22 13:38:36 [INFO] <- S2C_CHAT_BCAST seq=0 data={'from': 'cathy', 'text': '好'}
+2026-05-22 13:38:44 [INFO] <- S2C_CHAT_BCAST seq=0 data={'from': 'cathy', 'text': '啊那我们'}
+2026-05-22 13:38:53 [INFO] <- S2C_CHAT_BCAST seq=0 data={'from': 'cathy', 'text': '所有功能全ok了'}
+2026-05-22 13:39:00 [INFO] -> C2S_CHAT seq=7 data={'text': '你先下一步吧'}
+2026-05-22 13:39:00 [INFO] <- S2C_CHAT_BCAST seq=0 data={'from': 'kevin', 'text': '你先下一步吧'}
+2026-05-22 13:39:02 [INFO] <- S2C_MOVE_RESULT seq=0 data={'ok': True, 'row': 7, 'col': 7, 'color': 1, 'next_turn': 2, 'winner': 0}
+2026-05-22 13:39:21 [INFO] -> C2S_MOVE seq=8 data={'row': 8, 'col': 8}
+2026-05-22 13:39:21 [INFO] <- S2C_MOVE_RESULT seq=0 data={'ok': True, 'row': 8, 'col': 8, 'color': 2, 'next_turn': 1, 'winner': 0}
+2026-05-22 13:39:24 [INFO] <- S2C_MOVE_RESULT seq=0 data={'ok': True, 'row': 7, 'col': 8, 'color': 1, 'next_turn': 2, 'winner': 0}
+2026-05-22 13:39:46 [INFO] -> C2S_MOVE seq=9 data={'row': 7, 'col': 9}
+2026-05-22 13:39:46 [INFO] <- S2C_MOVE_RESULT seq=0 data={'ok': True, 'row': 7, 'col': 9, 'color': 2, 'next_turn': 1, 'winner': 0}
+2026-05-22 13:41:32 [INFO] -> C2S_CHAT seq=10 data={'text': '好了'}
+2026-05-22 13:41:32 [INFO] <- S2C_CHAT_BCAST seq=0 data={'from': 'kevin', 'text': '好了'}
+2026-05-22 13:41:46 [INFO] -> C2S_CHAT seq=11 data={'text': '我们所有功能全部齐全了'}
+2026-05-22 13:41:46 [INFO] <- S2C_CHAT_BCAST seq=0 data={'from': 'kevin', 'text': '我们所有功能全部齐全了'}
+2026-05-22 13:41:59 [INFO] <- S2C_CHAT_BCAST seq=0 data={'from': 'cathy', 'text': '太棒太棒'}
+2026-05-22 13:42:15 [INFO] -> C2S_CHAT seq=12 data={'text': '我认输离开了'}
+2026-05-22 13:42:15 [INFO] <- S2C_CHAT_BCAST seq=0 data={'from': 'kevin', 'text': '我认输离开了'}
+2026-05-22 13:42:19 [INFO] <- S2C_CHAT_BCAST seq=0 data={'from': 'cathy', 'text': 'ok'}
+2026-05-22 13:42:20 [INFO] -> C2S_LEAVE_ROOM seq=13 data={}
+2026-05-22 13:42:20 [INFO] <- S2C_ROOM_CLOSED seq=0 data={'reason': '你已离开房间', 'your_result': 'lose'}
+2026-05-22 13:42:20 [INFO] <- S2C_LOBBY_INFO seq=0 data={'online': ['alice', 'bob', 'cathy', 'kevin', 'lili'], 'online_count': 5, 'queue_size': 0, 'active_rooms': [{'room_id': 5, 'black': 'alice', 'white': 'bob', 'move_count': 18, 'started_at': 1779427895, 'observer_count': 0}]}
+2026-05-22 13:42:30 [INFO] <- S2C_LOBBY_INFO seq=0 data={'online': ['alice', 'bob', 'kevin', 'lili'], 'online_count': 4, 'queue_size': 0, 'active_rooms': [{'room_id': 5, 'black': 'alice', 'white': 'bob', 'move_count': 18, 'started_at': 1779427895, 'observer_count': 0}]}
+2026-05-22 13:44:06 [INFO] recv disconnected: peer closed during recv
+2026-05-22 13:44:06 [INFO] connection closed
+2026-05-22 13:46:00 [INFO] connection closed

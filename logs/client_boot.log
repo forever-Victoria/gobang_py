@@ -1,0 +1,259 @@
+2026-05-17 16:16:34 [INFO] connected to 127.0.0.1:9527
+2026-05-17 16:16:34 [INFO] -> C2S_REGISTER seq=1 data={'username': 'alice', 'password': 'pw1'}
+2026-05-17 16:16:34 [INFO] <- S2C_REGISTER_RESP seq=1 data={'ok': True}
+2026-05-17 16:16:35 [INFO] -> C2S_LOGIN seq=2 data={'username': 'alice', 'password': 'pw1'}
+2026-05-17 16:16:35 [INFO] <- S2C_LOGIN_RESP seq=2 data={'ok': True, 'uid': 1, 'username': 'alice', 'score': 1000, 'total': 0, 'win': 0}
+2026-05-17 16:16:35 [INFO] <- S2C_LOBBY_INFO seq=0 data={'online': ['alice'], 'online_count': 1, 'queue_size': 0}
+2026-05-17 16:17:10 [INFO] connected to 127.0.0.1:9527
+2026-05-17 16:17:10 [INFO] -> C2S_REGISTER seq=1 data={'username': 'bob', 'password': 'pw2'}
+2026-05-17 16:17:10 [INFO] <- S2C_REGISTER_RESP seq=1 data={'ok': True}
+2026-05-17 16:17:11 [INFO] -> C2S_LOGIN seq=2 data={'username': 'bob', 'password': 'pw2'}
+2026-05-17 16:17:11 [INFO] <- S2C_LOGIN_RESP seq=2 data={'ok': True, 'uid': 2, 'username': 'bob', 'score': 1000, 'total': 0, 'win': 0}
+2026-05-17 16:17:11 [INFO] <- S2C_LOBBY_INFO seq=0 data={'online': ['alice', 'bob'], 'online_count': 2, 'queue_size': 1}
+2026-05-20 15:16:17 [INFO] connected to 127.0.0.1:9527
+2026-05-20 15:16:17 [INFO] -> C2S_REGISTER seq=1 data={'username': 'alice', 'password': 'pw1'}
+2026-05-20 15:16:17 [INFO] <- S2C_REGISTER_RESP seq=1 data={'ok': False, 'reason': '用户名已被占用'}
+2026-05-20 15:16:20 [INFO] -> C2S_LOGIN seq=2 data={'username': 'alice', 'password': 'pw1'}
+2026-05-20 15:16:20 [INFO] <- S2C_LOGIN_RESP seq=2 data={'ok': True, 'uid': 1, 'username': 'alice', 'score': 1030, 'total': 3, 'win': 2}
+2026-05-20 15:16:20 [INFO] <- S2C_LOBBY_INFO seq=0 data={'online': ['alice'], 'online_count': 1, 'queue_size': 0, 'active_rooms': []}
+2026-05-20 15:16:38 [INFO] connected to 127.0.0.1:9527
+2026-05-20 15:16:38 [INFO] -> C2S_REGISTER seq=1 data={'username': 'bob', 'password': 'pw2'}
+2026-05-20 15:16:38 [INFO] <- S2C_REGISTER_RESP seq=1 data={'ok': False, 'reason': '用户名已被占用'}
+2026-05-20 15:16:39 [INFO] -> C2S_LOGIN seq=2 data={'username': 'bob', 'password': 'pw2'}
+2026-05-20 15:16:39 [INFO] <- S2C_LOGIN_RESP seq=2 data={'ok': True, 'uid': 2, 'username': 'bob', 'score': 970, 'total': 3, 'win': 1}
+2026-05-20 15:16:39 [INFO] <- S2C_LOBBY_INFO seq=0 data={'online': ['alice', 'bob'], 'online_count': 2, 'queue_size': 0, 'active_rooms': []}
+2026-05-20 15:16:57 [INFO] connected to 127.0.0.1:9527
+2026-05-20 15:16:57 [INFO] -> C2S_REGISTER seq=1 data={'username': 'cathy', 'password': 'pw3'}
+2026-05-20 15:16:57 [INFO] <- S2C_REGISTER_RESP seq=1 data={'ok': True}
+2026-05-20 15:16:58 [INFO] -> C2S_LOGIN seq=2 data={'username': 'cathy', 'password': 'pw3'}
+2026-05-20 15:16:58 [INFO] <- S2C_LOGIN_RESP seq=2 data={'ok': True, 'uid': 3, 'username': 'cathy', 'score': 1000, 'total': 0, 'win': 0}
+2026-05-20 15:16:58 [INFO] <- S2C_LOBBY_INFO seq=0 data={'online': ['alice', 'bob', 'cathy'], 'online_count': 3, 'queue_size': 0, 'active_rooms': []}
+2026-05-20 15:26:14 [INFO] connected to 127.0.0.1:9527
+2026-05-20 15:26:14 [INFO] -> C2S_LOGIN seq=1 data={'username': 'alice', 'password': 'pw1'}
+2026-05-20 15:26:14 [INFO] <- S2C_LOGIN_RESP seq=1 data={'ok': False, 'reason': '用户名或密码错误'}
+2026-05-20 15:26:16 [INFO] -> C2S_REGISTER seq=2 data={'username': 'alice', 'password': 'pw1'}
+2026-05-20 15:26:16 [INFO] <- S2C_REGISTER_RESP seq=2 data={'ok': True}
+2026-05-20 15:26:17 [INFO] -> C2S_LOGIN seq=3 data={'username': 'alice', 'password': 'pw1'}
+2026-05-20 15:26:17 [INFO] <- S2C_LOGIN_RESP seq=3 data={'ok': True, 'uid': 1, 'username': 'alice', 'score': 1000, 'total': 0, 'win': 0}
+2026-05-20 15:26:17 [INFO] <- S2C_LOBBY_INFO seq=0 data={'online': ['alice'], 'online_count': 1, 'queue_size': 0, 'active_rooms': []}
+2026-05-20 15:26:28 [INFO] connected to 127.0.0.1:9527
+2026-05-20 15:26:28 [INFO] -> C2S_REGISTER seq=1 data={'username': 'bob', 'password': 'pw2'}
+2026-05-20 15:26:28 [INFO] <- S2C_REGISTER_RESP seq=1 data={'ok': True}
+2026-05-20 15:26:28 [INFO] -> C2S_LOGIN seq=2 data={'username': 'bob', 'password': 'pw2'}
+2026-05-20 15:26:28 [INFO] <- S2C_LOGIN_RESP seq=2 data={'ok': True, 'uid': 2, 'username': 'bob', 'score': 1000, 'total': 0, 'win': 0}
+2026-05-20 15:26:28 [INFO] <- S2C_LOBBY_INFO seq=0 data={'online': ['alice', 'bob'], 'online_count': 2, 'queue_size': 0, 'active_rooms': []}
+2026-05-20 15:26:40 [INFO] connected to 127.0.0.1:9527
+2026-05-20 15:26:40 [INFO] -> C2S_REGISTER seq=1 data={'username': 'cathy', 'password': 'pw3'}
+2026-05-20 15:26:40 [INFO] <- S2C_REGISTER_RESP seq=1 data={'ok': True}
+2026-05-20 15:26:41 [INFO] -> C2S_LOGIN seq=2 data={'username': 'cathy', 'password': 'pw3'}
+2026-05-20 15:26:41 [INFO] <- S2C_LOGIN_RESP seq=2 data={'ok': True, 'uid': 3, 'username': 'cathy', 'score': 1000, 'total': 0, 'win': 0}
+2026-05-20 15:26:41 [INFO] <- S2C_LOBBY_INFO seq=0 data={'online': ['alice', 'bob', 'cathy'], 'online_count': 3, 'queue_size': 0, 'active_rooms': []}
+2026-05-20 15:33:49 [INFO] connected to 127.0.0.1:9527
+2026-05-20 15:33:49 [INFO] -> C2S_LOGIN seq=1 data={'username': 'alice', 'password': 'pw1'}
+2026-05-20 15:33:49 [INFO] <- S2C_LOGIN_RESP seq=1 data={'ok': True, 'uid': 1, 'username': 'alice', 'score': 1030, 'total': 1, 'win': 1}
+2026-05-20 15:33:49 [INFO] <- S2C_LOBBY_INFO seq=0 data={'online': ['alice'], 'online_count': 1, 'queue_size': 0, 'active_rooms': []}
+2026-05-20 15:34:03 [INFO] connected to 127.0.0.1:9527
+2026-05-20 15:34:03 [INFO] -> C2S_LOGIN seq=1 data={'username': 'bob', 'password': 'pw2'}
+2026-05-20 15:34:03 [INFO] <- S2C_LOGIN_RESP seq=1 data={'ok': True, 'uid': 2, 'username': 'bob', 'score': 1000, 'total': 0, 'win': 0}
+2026-05-20 15:34:03 [INFO] <- S2C_LOBBY_INFO seq=0 data={'online': ['alice', 'bob'], 'online_count': 2, 'queue_size': 0, 'active_rooms': []}
+2026-05-20 15:36:43 [INFO] connected to 127.0.0.1:9527
+2026-05-20 15:36:43 [INFO] -> C2S_LOGIN seq=1 data={'username': 'alice', 'password': 'pw1'}
+2026-05-20 15:36:43 [INFO] <- S2C_LOGIN_RESP seq=1 data={'ok': True, 'uid': 1, 'username': 'alice', 'score': 1030, 'total': 1, 'win': 1}
+2026-05-20 15:36:43 [INFO] <- S2C_LOBBY_INFO seq=0 data={'online': ['alice'], 'online_count': 1, 'queue_size': 0, 'active_rooms': []}
+2026-05-20 15:36:55 [INFO] connected to 127.0.0.1:9527
+2026-05-20 15:36:55 [INFO] -> C2S_LOGIN seq=1 data={'username': 'bob', 'password': 'pw2'}
+2026-05-20 15:36:55 [INFO] <- S2C_LOGIN_RESP seq=1 data={'ok': True, 'uid': 2, 'username': 'bob', 'score': 1000, 'total': 0, 'win': 0}
+2026-05-20 15:36:55 [INFO] <- S2C_LOBBY_INFO seq=0 data={'online': ['alice', 'bob'], 'online_count': 2, 'queue_size': 0, 'active_rooms': []}
+2026-05-20 15:39:26 [INFO] connection closed
+2026-05-20 15:39:34 [INFO] connected to 127.0.0.1:9527
+2026-05-20 15:39:34 [INFO] -> C2S_LOGIN seq=1 data={'username': 'alice', 'password': 'pw1'}
+2026-05-20 15:39:34 [INFO] <- S2C_LOGIN_RESP seq=1 data={'ok': True, 'uid': 1, 'username': 'alice', 'score': 1030, 'total': 1, 'win': 1}
+2026-05-20 15:39:34 [INFO] <- S2C_LOBBY_INFO seq=0 data={'online': ['alice'], 'online_count': 1, 'queue_size': 0, 'active_rooms': []}
+2026-05-20 15:44:09 [INFO] connection closed
+2026-05-20 15:44:22 [INFO] connection closed
+2026-05-20 15:44:49 [INFO] connected to 127.0.0.1:9527
+2026-05-20 15:44:49 [INFO] -> C2S_LOGIN seq=1 data={'username': 'bob', 'password': 'pw2'}
+2026-05-20 15:44:49 [INFO] <- S2C_LOGIN_RESP seq=1 data={'ok': True, 'uid': 2, 'username': 'bob', 'score': 1000, 'total': 0, 'win': 0}
+2026-05-20 15:44:49 [INFO] <- S2C_LOBBY_INFO seq=0 data={'online': ['alice', 'bob'], 'online_count': 2, 'queue_size': 0, 'active_rooms': []}
+2026-05-20 15:46:47 [INFO] connected to 127.0.0.1:9527
+2026-05-20 15:46:47 [INFO] -> C2S_LOGIN seq=1 data={'username': 'alice', 'password': 'pw1'}
+2026-05-20 15:46:47 [INFO] <- S2C_LOGIN_RESP seq=1 data={'ok': True, 'uid': 1, 'username': 'alice', 'score': 1030, 'total': 1, 'win': 1}
+2026-05-20 15:46:47 [INFO] <- S2C_LOBBY_INFO seq=0 data={'online': ['alice'], 'online_count': 1, 'queue_size': 0, 'active_rooms': []}
+2026-05-20 15:48:37 [INFO] connected to 127.0.0.1:9527
+2026-05-20 15:48:37 [INFO] -> C2S_LOGIN seq=1 data={'username': 'alice', 'password': 'pw1'}
+2026-05-20 15:48:37 [INFO] <- S2C_LOGIN_RESP seq=1 data={'ok': True, 'uid': 1, 'username': 'alice', 'score': 1030, 'total': 1, 'win': 1}
+2026-05-20 15:48:37 [INFO] <- S2C_LOBBY_INFO seq=0 data={'online': ['alice'], 'online_count': 1, 'queue_size': 0, 'active_rooms': []}
+2026-05-20 15:49:21 [INFO] connected to 127.0.0.1:9527
+2026-05-20 15:49:21 [INFO] -> C2S_LOGIN seq=1 data={'username': 'bob', 'password': 'pw2'}
+2026-05-20 15:49:21 [INFO] <- S2C_LOGIN_RESP seq=1 data={'ok': True, 'uid': 2, 'username': 'bob', 'score': 1000, 'total': 0, 'win': 0}
+2026-05-20 15:49:21 [INFO] <- S2C_LOBBY_INFO seq=0 data={'online': ['alice', 'bob'], 'online_count': 2, 'queue_size': 1, 'active_rooms': []}
+2026-05-20 15:50:46 [INFO] connected to 127.0.0.1:9527
+2026-05-20 15:50:46 [INFO] -> C2S_LOGIN seq=1 data={'username': 'cathy', 'password': 'pw3'}
+2026-05-20 15:50:46 [INFO] <- S2C_LOGIN_RESP seq=1 data={'ok': True, 'uid': 3, 'username': 'cathy', 'score': 970, 'total': 1, 'win': 0}
+2026-05-20 15:50:46 [INFO] <- S2C_LOBBY_INFO seq=0 data={'online': ['alice', 'bob', 'cathy'], 'online_count': 3, 'queue_size': 0, 'active_rooms': [{'room_id': 1, 'black': 'alice', 'white': 'bob', 'move_count': 4, 'started_at': 1779263370, 'observer_count': 0}]}
+2026-05-20 15:52:56 [INFO] connected to 127.0.0.1:9527
+2026-05-20 15:52:56 [INFO] -> C2S_LOGIN seq=1 data={'username': 'alice', 'password': 'pw1'}
+2026-05-20 15:52:56 [INFO] <- S2C_LOGIN_RESP seq=1 data={'ok': True, 'uid': 1, 'username': 'alice', 'score': 1030, 'total': 1, 'win': 1}
+2026-05-20 15:52:56 [INFO] <- S2C_RECONNECT_RESP seq=0 data={'ok': True, 'room_state': {'room_id': 1, 'black': 'alice', 'white': 'bob', 'board_size': 15, 'board': [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 2, 1, 1, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]], 'turn_color': 1, 'move_count': 4, 'moves': [{'index': 1, 'row': 7, 'col': 7, 'color': 1, 'ts': 1779263398}, {'index': 2, 'row': 7, 'col': 6, 'color': 2, 'ts': 1779263402}, {'index': 3, 'row': 7, 'col': 8, 'color': 1, 'ts': 1779263404}, {'index': 4, 'row': 8, 'col': 8, 'color': 2, 'ts': 1779263405}], 'chat_log': [], 'ended': False, 'your_color': 1, 'opponent': 'bob'}}
+2026-05-20 15:52:56 [INFO] <- S2C_CHAT_BCAST seq=0 data={'from': 'system', 'text': 'alice 已重连恢复对局'}
+2026-05-20 15:53:12 [INFO] connected to 127.0.0.1:9527
+2026-05-20 15:53:12 [INFO] -> C2S_LOGIN seq=1 data={'username': 'bob', 'password': 'pw2'}
+2026-05-20 15:53:12 [INFO] <- S2C_LOGIN_RESP seq=1 data={'ok': True, 'uid': 2, 'username': 'bob', 'score': 1000, 'total': 0, 'win': 0}
+2026-05-20 15:53:12 [INFO] <- S2C_RECONNECT_RESP seq=0 data={'ok': True, 'room_state': {'room_id': 1, 'black': 'alice', 'white': 'bob', 'board_size': 15, 'board': [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 2, 1, 1, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]], 'turn_color': 1, 'move_count': 4, 'moves': [{'index': 1, 'row': 7, 'col': 7, 'color': 1, 'ts': 1779263398}, {'index': 2, 'row': 7, 'col': 6, 'color': 2, 'ts': 1779263402}, {'index': 3, 'row': 7, 'col': 8, 'color': 1, 'ts': 1779263404}, {'index': 4, 'row': 8, 'col': 8, 'color': 2, 'ts': 1779263405}], 'chat_log': [], 'ended': False, 'your_color': 2, 'opponent': 'alice'}}
+2026-05-20 15:53:12 [INFO] <- S2C_CHAT_BCAST seq=0 data={'from': 'system', 'text': 'bob 已重连恢复对局'}
+2026-05-20 16:07:24 [INFO] connection closed
+2026-05-20 16:08:57 [INFO] connected to 127.0.0.1:9527
+2026-05-20 16:11:59 [INFO] -> C2S_LOGOUT seq=1 data={}
+2026-05-20 16:11:59 [INFO] recv disconnected: peer closed during recv
+2026-05-20 16:11:59 [INFO] connection closed
+2026-05-20 16:12:15 [INFO] connected to 127.0.0.1:9527
+2026-05-20 16:12:15 [INFO] -> C2S_LOGIN seq=1 data={'username': 'alice', 'password': 'pw1'}
+2026-05-20 16:12:15 [INFO] <- S2C_LOGIN_RESP seq=1 data={'ok': True, 'uid': 1, 'username': 'alice', 'score': 1060, 'total': 2, 'win': 2}
+2026-05-20 16:12:15 [INFO] <- S2C_LOBBY_INFO seq=0 data={'online': ['alice'], 'online_count': 1, 'queue_size': 0, 'active_rooms': []}
+2026-05-20 16:24:50 [INFO] connected to 127.0.0.1:9527
+2026-05-20 16:24:50 [INFO] -> C2S_LOGIN seq=1 data={'username': 'alice', 'password': 'pw1'}
+2026-05-20 16:24:50 [INFO] <- S2C_LOGIN_RESP seq=1 data={'ok': True, 'uid': 1, 'username': 'alice', 'score': 1060, 'total': 2, 'win': 2}
+2026-05-20 16:24:50 [INFO] <- S2C_LOBBY_INFO seq=0 data={'online': ['alice'], 'online_count': 1, 'queue_size': 0, 'active_rooms': []}
+2026-05-20 16:26:33 [INFO] connected to 127.0.0.1:9527
+2026-05-20 16:26:33 [INFO] -> C2S_LOGIN seq=1 data={'username': 'alice', 'password': 'pw1'}
+2026-05-20 16:26:33 [INFO] <- S2C_LOGIN_RESP seq=1 data={'ok': True, 'uid': 1, 'username': 'alice', 'score': 1060, 'total': 2, 'win': 2}
+2026-05-20 16:26:33 [INFO] <- S2C_LOBBY_INFO seq=0 data={'online': ['alice'], 'online_count': 1, 'queue_size': 0, 'active_rooms': []}
+2026-05-20 16:27:14 [INFO] connected to 127.0.0.1:9527
+2026-05-20 16:27:14 [INFO] -> C2S_LOGIN seq=1 data={'username': 'bob', 'password': 'pw2'}
+2026-05-20 16:27:14 [INFO] <- S2C_LOGIN_RESP seq=1 data={'ok': True, 'uid': 2, 'username': 'bob', 'score': 970, 'total': 1, 'win': 0}
+2026-05-20 16:27:14 [INFO] <- S2C_LOBBY_INFO seq=0 data={'online': ['alice', 'bob'], 'online_count': 2, 'queue_size': 1, 'active_rooms': []}
+2026-05-20 16:28:37 [INFO] connected to 127.0.0.1:9527
+2026-05-20 16:28:37 [INFO] -> C2S_LOGIN seq=1 data={'username': 'cathy', 'password': 'pw3'}
+2026-05-20 16:28:37 [INFO] <- S2C_LOGIN_RESP seq=1 data={'ok': True, 'uid': 3, 'username': 'cathy', 'score': 970, 'total': 1, 'win': 0}
+2026-05-20 16:28:37 [INFO] <- S2C_LOBBY_INFO seq=0 data={'online': ['alice', 'bob', 'cathy'], 'online_count': 3, 'queue_size': 0, 'active_rooms': []}
+2026-05-20 16:35:30 [INFO] connected to 127.0.0.1:9527
+2026-05-20 16:35:30 [INFO] -> C2S_LOGIN seq=1 data={'username': 'alice', 'password': 'pw1'}
+2026-05-20 16:35:30 [INFO] <- S2C_LOGIN_RESP seq=1 data={'ok': True, 'uid': 1, 'username': 'alice', 'score': 1060, 'total': 4, 'win': 3}
+2026-05-20 16:35:30 [INFO] <- S2C_LOBBY_INFO seq=0 data={'online': ['alice'], 'online_count': 1, 'queue_size': 0, 'active_rooms': []}
+2026-05-20 16:36:35 [INFO] connected to 127.0.0.1:9527
+2026-05-20 16:36:35 [INFO] -> C2S_LOGIN seq=1 data={'username': 'alice', 'password': 'pw1'}
+2026-05-20 16:36:35 [INFO] <- S2C_LOGIN_RESP seq=1 data={'ok': True, 'uid': 1, 'username': 'alice', 'score': 1060, 'total': 4, 'win': 3}
+2026-05-20 16:36:35 [INFO] <- S2C_LOBBY_INFO seq=0 data={'online': ['alice'], 'online_count': 1, 'queue_size': 0, 'active_rooms': []}
+2026-05-20 16:39:12 [INFO] connected to 127.0.0.1:9527
+2026-05-20 16:39:12 [INFO] -> C2S_LOGIN seq=1 data={'username': 'bob', 'password': 'pw2'}
+2026-05-20 16:39:12 [INFO] <- S2C_LOGIN_RESP seq=1 data={'ok': True, 'uid': 2, 'username': 'bob', 'score': 940, 'total': 2, 'win': 0}
+2026-05-20 16:39:12 [INFO] <- S2C_LOBBY_INFO seq=0 data={'online': ['alice', 'bob'], 'online_count': 2, 'queue_size': 0, 'active_rooms': []}
+2026-05-20 16:42:41 [INFO] connected to 127.0.0.1:9527
+2026-05-20 16:42:41 [INFO] -> C2S_LOGIN seq=1 data={'username': 'alice', 'password': 'pw1'}
+2026-05-20 16:42:41 [INFO] <- S2C_LOGIN_RESP seq=1 data={'ok': True, 'uid': 1, 'username': 'alice', 'score': 1030, 'total': 5, 'win': 3}
+2026-05-20 16:42:41 [INFO] <- S2C_LOBBY_INFO seq=0 data={'online': ['alice'], 'online_count': 1, 'queue_size': 0, 'active_rooms': []}
+2026-05-20 16:43:10 [INFO] connected to 127.0.0.1:9527
+2026-05-20 16:43:10 [INFO] -> C2S_LOGIN seq=1 data={'username': 'bob', 'password': 'pw2'}
+2026-05-20 16:43:10 [INFO] <- S2C_LOGIN_RESP seq=1 data={'ok': True, 'uid': 2, 'username': 'bob', 'score': 970, 'total': 3, 'win': 1}
+2026-05-20 16:43:10 [INFO] <- S2C_LOBBY_INFO seq=0 data={'online': ['alice', 'bob'], 'online_count': 2, 'queue_size': 0, 'active_rooms': []}
+2026-05-20 16:43:24 [INFO] connected to 127.0.0.1:9527
+2026-05-20 16:43:24 [INFO] -> C2S_LOGIN seq=1 data={'username': 'cathy', 'password': 'pw3'}
+2026-05-20 16:43:24 [INFO] <- S2C_LOGIN_RESP seq=1 data={'ok': True, 'uid': 3, 'username': 'cathy', 'score': 1000, 'total': 2, 'win': 1}
+2026-05-20 16:43:24 [INFO] <- S2C_LOBBY_INFO seq=0 data={'online': ['alice', 'bob', 'cathy'], 'online_count': 3, 'queue_size': 0, 'active_rooms': []}
+2026-05-20 16:46:21 [INFO] connected to 127.0.0.1:9527
+2026-05-20 16:46:21 [INFO] -> C2S_LOGIN seq=1 data={'username': 'alice', 'password': 'pw1'}
+2026-05-20 16:46:21 [INFO] <- S2C_LOGIN_RESP seq=1 data={'ok': True, 'uid': 1, 'username': 'alice', 'score': 1000, 'total': 6, 'win': 3}
+2026-05-20 16:46:21 [INFO] <- S2C_LOBBY_INFO seq=0 data={'online': ['alice'], 'online_count': 1, 'queue_size': 0, 'active_rooms': []}
+2026-05-20 16:46:28 [INFO] connected to 127.0.0.1:9527
+2026-05-20 16:46:28 [INFO] -> C2S_LOGIN seq=1 data={'username': 'bob', 'password': 'pw2'}
+2026-05-20 16:46:28 [INFO] <- S2C_LOGIN_RESP seq=1 data={'ok': True, 'uid': 2, 'username': 'bob', 'score': 1000, 'total': 4, 'win': 2}
+2026-05-20 16:46:28 [INFO] <- S2C_LOBBY_INFO seq=0 data={'online': ['alice', 'bob'], 'online_count': 2, 'queue_size': 0, 'active_rooms': []}
+2026-05-20 17:00:11 [INFO] connected to 127.0.0.1:9527
+2026-05-20 17:00:11 [INFO] -> C2S_LOGIN seq=1 data={'username': 'alice', 'password': 'pw1'}
+2026-05-20 17:00:11 [INFO] <- S2C_LOGIN_RESP seq=1 data={'ok': True, 'uid': 1, 'username': 'alice', 'score': 1030, 'total': 7, 'win': 4}
+2026-05-20 17:00:11 [INFO] <- S2C_LOBBY_INFO seq=0 data={'online': ['alice'], 'online_count': 1, 'queue_size': 0, 'active_rooms': []}
+2026-05-20 17:01:42 [INFO] connection closed
+2026-05-20 17:04:59 [INFO] connected to 127.0.0.1:9527
+2026-05-20 17:04:59 [INFO] -> C2S_LOGIN seq=1 data={'username': 'alice', 'password': 'pw1'}
+2026-05-20 17:04:59 [INFO] <- S2C_LOGIN_RESP seq=1 data={'ok': True, 'uid': 1, 'username': 'alice', 'score': 1030, 'total': 7, 'win': 4}
+2026-05-20 17:04:59 [INFO] <- S2C_LOBBY_INFO seq=0 data={'online': ['alice'], 'online_count': 1, 'queue_size': 0, 'active_rooms': []}
+2026-05-20 17:05:22 [INFO] connected to 127.0.0.1:9527
+2026-05-20 17:05:22 [INFO] -> C2S_LOGIN seq=1 data={'username': 'bob', 'password': 'pw2'}
+2026-05-20 17:05:22 [INFO] <- S2C_LOGIN_RESP seq=1 data={'ok': True, 'uid': 2, 'username': 'bob', 'score': 970, 'total': 5, 'win': 2}
+2026-05-20 17:05:22 [INFO] <- S2C_LOBBY_INFO seq=0 data={'online': ['alice', 'bob'], 'online_count': 2, 'queue_size': 0, 'active_rooms': []}
+2026-05-20 17:05:43 [INFO] connected to 127.0.0.1:9527
+2026-05-20 17:05:43 [INFO] -> C2S_LOGIN seq=1 data={'username': 'cathy', 'password': 'pw3'}
+2026-05-20 17:05:43 [INFO] <- S2C_LOGIN_RESP seq=1 data={'ok': True, 'uid': 3, 'username': 'cathy', 'score': 1000, 'total': 2, 'win': 1}
+2026-05-20 17:05:43 [INFO] <- S2C_LOBBY_INFO seq=0 data={'online': ['alice', 'bob', 'cathy'], 'online_count': 3, 'queue_size': 0, 'active_rooms': []}
+2026-05-20 17:36:30 [INFO] connected to 127.0.0.1:9527
+2026-05-20 17:36:30 [INFO] -> C2S_LOGIN seq=1 data={'username': 'alice', 'password': 'pw1'}
+2026-05-20 17:36:30 [INFO] <- S2C_LOGIN_RESP seq=1 data={'ok': True, 'uid': 1, 'username': 'alice', 'score': 1090, 'total': 9, 'win': 6}
+2026-05-20 17:36:30 [INFO] <- S2C_LOBBY_INFO seq=0 data={'online': ['alice'], 'online_count': 1, 'queue_size': 0, 'active_rooms': []}
+2026-05-20 17:37:51 [INFO] connected to 127.0.0.1:9527
+2026-05-20 17:37:51 [INFO] -> C2S_LOGIN seq=1 data={'username': 'bob', 'password': 'pw2'}
+2026-05-20 17:37:51 [INFO] <- S2C_LOGIN_RESP seq=1 data={'ok': True, 'uid': 2, 'username': 'bob', 'score': 940, 'total': 6, 'win': 2}
+2026-05-20 17:37:51 [INFO] <- S2C_LOBBY_INFO seq=0 data={'online': ['alice', 'bob'], 'online_count': 2, 'queue_size': 0, 'active_rooms': []}
+2026-05-20 17:39:16 [INFO] connected to 127.0.0.1:9527
+2026-05-20 17:39:16 [INFO] -> C2S_LOGIN seq=1 data={'username': 'cathy', 'password': 'pw3'}
+2026-05-20 17:39:16 [INFO] <- S2C_LOGIN_RESP seq=1 data={'ok': True, 'uid': 3, 'username': 'cathy', 'score': 970, 'total': 3, 'win': 1}
+2026-05-20 17:39:16 [INFO] <- S2C_LOBBY_INFO seq=0 data={'online': ['alice', 'bob', 'cathy'], 'online_count': 3, 'queue_size': 0, 'active_rooms': [{'room_id': 1, 'black': 'alice', 'white': 'bob', 'move_count': 4, 'started_at': 1779269885, 'observer_count': 0}]}
+2026-05-20 17:54:26 [INFO] connected to 127.0.0.1:9527
+2026-05-20 17:54:26 [INFO] -> C2S_LOGIN seq=1 data={'username': 'alice', 'password': 'pw1'}
+2026-05-20 17:54:26 [INFO] <- S2C_LOGIN_RESP seq=1 data={'ok': True, 'uid': 1, 'username': 'alice', 'score': 1120, 'total': 10, 'win': 7}
+2026-05-20 17:54:26 [INFO] <- S2C_LOBBY_INFO seq=0 data={'online': ['alice'], 'online_count': 1, 'queue_size': 0, 'active_rooms': []}
+2026-05-20 17:54:52 [INFO] connected to 127.0.0.1:9527
+2026-05-20 17:54:52 [INFO] -> C2S_LOGIN seq=1 data={'username': 'cathy', 'password': 'pw3'}
+2026-05-20 17:54:52 [INFO] <- S2C_LOGIN_RESP seq=1 data={'ok': True, 'uid': 3, 'username': 'cathy', 'score': 970, 'total': 3, 'win': 1}
+2026-05-20 17:54:52 [INFO] <- S2C_LOBBY_INFO seq=0 data={'online': ['alice', 'cathy'], 'online_count': 2, 'queue_size': 0, 'active_rooms': []}
+2026-05-20 17:55:39 [INFO] connected to 127.0.0.1:9527
+2026-05-20 17:55:39 [INFO] -> C2S_LOGIN seq=1 data={'username': 'bob', 'password': 'pw2'}
+2026-05-20 17:55:39 [INFO] <- S2C_LOGIN_RESP seq=1 data={'ok': True, 'uid': 2, 'username': 'bob', 'score': 910, 'total': 7, 'win': 2}
+2026-05-20 17:55:39 [INFO] <- S2C_LOBBY_INFO seq=0 data={'online': ['alice', 'cathy', 'bob'], 'online_count': 3, 'queue_size': 0, 'active_rooms': [{'room_id': 1, 'black': 'alice', 'white': 'cathy', 'move_count': 4, 'started_at': 1779270899, 'observer_count': 0}]}
+2026-05-20 17:58:42 [INFO] connection closed
+2026-05-20 23:40:44 [INFO] connected to 127.0.0.1:9527
+2026-05-20 23:40:44 [INFO] -> C2S_LOGIN seq=1 data={'username': 'alice', 'password': 'pw1'}
+2026-05-20 23:40:44 [INFO] <- S2C_LOGIN_RESP seq=1 data={'ok': True, 'uid': 1, 'username': 'alice', 'score': 1150, 'total': 11, 'win': 8}
+2026-05-20 23:40:44 [INFO] <- S2C_LOBBY_INFO seq=0 data={'online': ['alice'], 'online_count': 1, 'queue_size': 0, 'active_rooms': []}
+2026-05-20 23:41:10 [INFO] connected to 127.0.0.1:9527
+2026-05-20 23:41:10 [INFO] -> C2S_LOGIN seq=1 data={'username': 'bob', 'password': 'pw2'}
+2026-05-20 23:41:11 [INFO] <- S2C_LOGIN_RESP seq=1 data={'ok': True, 'uid': 2, 'username': 'bob', 'score': 910, 'total': 7, 'win': 2}
+2026-05-20 23:41:11 [INFO] <- S2C_LOBBY_INFO seq=0 data={'online': ['alice', 'bob'], 'online_count': 2, 'queue_size': 0, 'active_rooms': []}
+2026-05-20 23:48:35 [INFO] connected to 127.0.0.1:9527
+2026-05-20 23:48:35 [INFO] -> C2S_LOGIN seq=1 data={'username': 'alice', 'password': 'pw1'}
+2026-05-20 23:48:35 [INFO] <- S2C_LOGIN_RESP seq=1 data={'ok': True, 'uid': 1, 'username': 'alice', 'score': 1180, 'total': 12, 'win': 9}
+2026-05-20 23:48:35 [INFO] <- S2C_LOBBY_INFO seq=0 data={'online': ['alice'], 'online_count': 1, 'queue_size': 0, 'active_rooms': []}
+2026-05-20 23:48:50 [INFO] connected to 127.0.0.1:9527
+2026-05-20 23:48:50 [INFO] -> C2S_LOGIN seq=1 data={'username': 'bob', 'password': 'pw2'}
+2026-05-20 23:48:50 [INFO] <- S2C_LOGIN_RESP seq=1 data={'ok': True, 'uid': 2, 'username': 'bob', 'score': 880, 'total': 8, 'win': 2}
+2026-05-20 23:48:50 [INFO] <- S2C_LOBBY_INFO seq=0 data={'online': ['alice', 'bob'], 'online_count': 2, 'queue_size': 0, 'active_rooms': []}
+2026-05-21 14:26:17 [INFO] connected to 127.0.0.1:9527
+2026-05-21 14:26:17 [INFO] -> C2S_LOGIN seq=1 data={'username': 'alice', 'password': 'pw1'}
+2026-05-21 14:26:17 [INFO] <- S2C_LOGIN_RESP seq=1 data={'ok': True, 'uid': 1, 'username': 'alice', 'score': 1180, 'total': 12, 'win': 9}
+2026-05-21 14:26:17 [INFO] <- S2C_LOBBY_INFO seq=0 data={'online': ['alice'], 'online_count': 1, 'queue_size': 0, 'active_rooms': []}
+2026-05-21 14:30:36 [INFO] connected to 127.0.0.1:9527
+2026-05-21 14:30:36 [INFO] -> C2S_LOGIN seq=1 data={'username': 'bob', 'password': 'pw2'}
+2026-05-21 14:30:36 [INFO] <- S2C_LOGIN_RESP seq=1 data={'ok': True, 'uid': 2, 'username': 'bob', 'score': 880, 'total': 8, 'win': 2}
+2026-05-21 14:30:36 [INFO] <- S2C_LOBBY_INFO seq=0 data={'online': ['alice', 'bob'], 'online_count': 2, 'queue_size': 0, 'active_rooms': []}
+2026-05-21 14:32:58 [INFO] connected to 127.0.0.1:9527
+2026-05-21 14:32:58 [INFO] -> C2S_LOGIN seq=1 data={'username': 'cathy', 'password': 'pw3'}
+2026-05-21 14:32:58 [INFO] <- S2C_LOGIN_RESP seq=1 data={'ok': True, 'uid': 3, 'username': 'cathy', 'score': 940, 'total': 4, 'win': 1}
+2026-05-21 14:32:58 [INFO] <- S2C_LOBBY_INFO seq=0 data={'online': ['alice', 'bob', 'cathy'], 'online_count': 3, 'queue_size': 0, 'active_rooms': [{'room_id': 2, 'black': 'alice', 'white': 'bob', 'move_count': 2, 'started_at': 1779345091, 'observer_count': 0}]}
+2026-05-22 13:30:47 [INFO] connected to 140.143.202.203:9527
+2026-05-22 13:30:47 [INFO] -> C2S_LOGIN seq=1 data={'username': 'alice', 'password': 'pw1'}
+2026-05-22 13:30:47 [INFO] <- S2C_LOGIN_RESP seq=1 data={'ok': True, 'uid': 1, 'username': 'alice', 'score': 1120, 'total': 18, 'win': 11}
+2026-05-22 13:36:28 [INFO] connected to 140.143.202.203:9527
+2026-05-22 13:36:28 [INFO] -> C2S_REGISTER seq=1 data={'username': 'kevin', 'password': 'pw4'}
+2026-05-22 13:36:28 [INFO] <- S2C_REGISTER_RESP seq=1 data={'ok': True}
+2026-05-22 13:36:29 [INFO] -> C2S_LOGIN seq=2 data={'username': 'kevin', 'password': 'pw4'}
+2026-05-22 13:36:30 [INFO] <- S2C_LOGIN_RESP seq=2 data={'ok': True, 'uid': 4, 'username': 'kevin', 'score': 1000, 'total': 0, 'win': 0}
+2026-05-22 13:40:00 [INFO] connected to 140.143.202.203:9527
+2026-05-22 13:40:00 [INFO] -> C2S_REGISTER seq=1 data={'username': 'lili', 'password': 'pw5'}
+2026-05-22 13:40:00 [INFO] <- S2C_REGISTER_RESP seq=1 data={'ok': True}
+2026-05-22 13:40:01 [INFO] -> C2S_LOGIN seq=2 data={'username': 'lili', 'password': 'pw5'}
+2026-05-22 13:40:01 [INFO] <- S2C_LOGIN_RESP seq=2 data={'ok': True, 'uid': 5, 'username': 'lili', 'score': 1000, 'total': 0, 'win': 0}
+2026-05-22 14:45:03 [INFO] connected to 140.143.202.203:9527
+2026-05-22 14:45:03 [INFO] -> C2S_LOGIN seq=1 data={'username': 'alice', 'password': 'pw1'}
+2026-05-22 14:45:03 [INFO] <- S2C_LOGIN_RESP seq=1 data={'ok': False, 'reason': '该用户已在别处登录'}
+2026-05-22 14:45:04 [INFO] -> C2S_LOGIN seq=2 data={'username': 'alice', 'password': 'pw1'}
+2026-05-22 14:45:04 [INFO] <- S2C_LOGIN_RESP seq=2 data={'ok': False, 'reason': '该用户已在别处登录'}
+2026-05-22 14:45:17 [INFO] -> C2S_LOGIN seq=3 data={'username': 'lili', 'password': 'pw5'}
+2026-05-22 14:45:17 [INFO] <- S2C_LOGIN_RESP seq=3 data={'ok': True, 'uid': 5, 'username': 'lili', 'score': 1000, 'total': 0, 'win': 0}
+2026-05-22 14:46:46 [INFO] connected to 140.143.202.203:9527
+2026-05-22 14:46:46 [INFO] -> C2S_LOGIN seq=1 data={'username': 'lili', 'password': 'pw5'}
+2026-05-22 14:46:46 [INFO] <- S2C_LOGIN_RESP seq=1 data={'ok': True, 'uid': 5, 'username': 'lili', 'score': 1000, 'total': 0, 'win': 0}
+2026-05-25 15:39:13 [INFO] connected to 140.143.202.203:9527
+2026-05-25 15:39:13 [INFO] -> C2S_LOGIN seq=1 data={'username': 'alice', 'password': 'pw1'}
+2026-05-25 15:39:13 [INFO] <- S2C_LOGIN_RESP seq=1 data={'ok': True, 'uid': 1, 'username': 'alice', 'score': 1120, 'total': 18, 'win': 11}
+2026-05-25 15:43:54 [INFO] connected to 140.143.202.203:9527
+2026-05-25 15:43:54 [INFO] -> C2S_LOGIN seq=1 data={'username': 'bob', 'password': 'pw2'}
+2026-05-25 15:43:54 [INFO] <- S2C_LOGIN_RESP seq=1 data={'ok': True, 'uid': 2, 'username': 'bob', 'score': 820, 'total': 12, 'win': 3}
