@@ -24,22 +24,24 @@
 |             MAGIC             |   VERSION     |     TYPE      |
 |       'G' (0x47)              |       'B' (0x42)              |
 +---------------+---------------+---------------+---------------+
-|                         PAYLOAD_LEN (big-endian uint32)        |
+|                         PAYLOAD_LEN (big-endian uint32)       |
 +---------------+---------------+---------------+---------------+
-|                                                                |
+|                                                               |
 |             PAYLOAD: UTF-8 编码的 JSON 对象                    |
-|             长度恰好为 PAYLOAD_LEN 字节                        |
+|             长度恰好为 PAYLOAD_LEN 字节                         |
 |                                                                |
 +----------------------------------------------------------------+
 ```
 
-| 字段 | 偏移 | 长度 | 取值 | 说明 |
-|---|---:|---:|---|---|
-| `MAGIC` | 0 | 2 | `0x47 0x42` (ASCII "GB") | 固定. 非 `GB` 直接判定非法包并断开连接 |
-| `VERSION` | 2 | 1 | `0x01` | 协议版本号. 未来不兼容升级时 +1 |
-| `TYPE` | 3 | 1 | 见 §4 | 消息类型枚举 |
-| `PAYLOAD_LEN` | 4 | 4 | big-endian uint32 | 后续 JSON payload 字节数 (≤ 1 MiB) |
-| `PAYLOAD` | 8 | 变长 | UTF-8 JSON | 见 §3 |
+
+| 字段            | 偏移  | 长度  | 取值                       | 说明                            |
+| ------------- | --- | --- | ------------------------ | ----------------------------- |
+| `MAGIC`       | 0   | 2   | `0x47 0x42` (ASCII "GB") | 固定. 非 `GB` 直接判定非法包并断开连接       |
+| `VERSION`     | 2   | 1   | `0x01`                   | 协议版本号. 未来不兼容升级时 +1            |
+| `TYPE`        | 3   | 1   | 见 §4                     | 消息类型枚举                        |
+| `PAYLOAD_LEN` | 4   | 4   | big-endian uint32        | 后续 JSON payload 字节数 (≤ 1 MiB) |
+| `PAYLOAD`     | 8   | 变长  | UTF-8 JSON               | 见 §3                          |
+
 
 > Python 端 `struct` 格式串为 `"!2sBBI"`, 长度 `struct.calcsize == 8`.
 
@@ -56,12 +58,15 @@ Payload 是一个 UTF-8 编码的 JSON 对象, 根对象**必须**包含两个�
 }
 ```
 
-| 字段 | 类型 | 含义 |
-|---|---|---|
-| `seq` | 非负整数 | 发送端自增的序列号, 用于关联请求/响应 (服务端响应时通常回填请求的 seq) |
-| `data` | object | 业务负载, 字段定义见 §4 |
+
+| 字段     | 类型     | 含义                                       |
+| ------ | ------ | ---------------------------------------- |
+| `seq`  | 非负整数   | 发送端自增的序列号, 用于关联请求/响应 (服务端响应时通常回填请求的 seq) |
+| `data` | object | 业务负载, 字段定义见 §4                           |
+
 
 非法 payload (非 JSON / 根不是 object / `data` 不是 object) 视为 **协议错误**, 服务端会:
+
 1. 回一条 `S2C_ERROR { code: "BAD_FRAME", reason: "..." }`;
 2. 关闭该连接.
 
@@ -78,45 +83,50 @@ Payload 是一个 UTF-8 编码的 JSON 对象, 根对象**必须**包含两个�
 
 ### 4.1 客户端 → 服务端
 
-| TYPE | 名称 | 时机 | data 字段 |
-|---:|---|---|---|
-| `0x01` | `C2S_REGISTER` | 注册账号 | `{ "username": str, "password": str }` |
-| `0x02` | `C2S_LOGIN`    | 登录     | `{ "username": str, "password": str }` |
-| `0x03` | `C2S_LOGOUT`   | 主动登出 | `{}` |
-| `0x04` | `C2S_MATCH_START` | 加入匹配队列 | `{}` |
-| `0x05` | `C2S_MATCH_STOP`  | 取消匹配 | `{}` |
-| `0x06` | `C2S_MOVE`     | 落子     | `{ "row": int, "col": int }`  // 0 ≤ row,col ≤ 14 |
-| `0x07` | `C2S_CHAT`     | 房间内聊天 | `{ "text": str }`  // ≤ 200 字符, 超长截断 |
-| `0x08` | `C2S_LEAVE_ROOM` | 中途离开当前对局 (判负) | `{}` |
-| `0x09` | `C2S_PING`     | 心跳     | `{}` |
-| `0x0A` | `C2S_SPECTATE_LIST` | 查询进行中房间列表 | `{}` |
-| `0x0B` | `C2S_SPECTATE_JOIN` | 加入观战 | `{ "room_id": int }` |
-| `0x0C` | `C2S_RECONNECT_RESUME` | 断线重连恢复 | `{ "room_id"?: int }` |
-| `0x0D` | `C2S_REPLAY_LIST` | 查询历史回放列表 | `{ "limit"?: int, "offset"?: int }` |
-| `0x0E` | `C2S_REPLAY_GET` | 获取单局回放详情 | `{ "replay_id": int }` |
-| `0x0F` | `C2S_RANK_LIST` | 查询排行榜 | `{ "limit"?: int }` |
+
+| TYPE   | 名称                     | 时机            | data 字段                                          |
+| ------ | ---------------------- | ------------- | ------------------------------------------------ |
+| `0x01` | `C2S_REGISTER`         | 注册账号          | `{ "username": str, "password": str }`           |
+| `0x02` | `C2S_LOGIN`            | 登录            | `{ "username": str, "password": str }`           |
+| `0x03` | `C2S_LOGOUT`           | 主动登出          | `{}`                                             |
+| `0x04` | `C2S_MATCH_START`      | 加入匹配队列        | `{}`                                             |
+| `0x05` | `C2S_MATCH_STOP`       | 取消匹配          | `{}`                                             |
+| `0x06` | `C2S_MOVE`             | 落子            | `{ "row": int, "col": int }` // 0 ≤ row,col ≤ 14 |
+| `0x07` | `C2S_CHAT`             | 房间内聊天         | `{ "text": str }` // ≤ 200 字符, 超长截断              |
+| `0x08` | `C2S_LEAVE_ROOM`       | 中途离开当前对局 (判负) | `{}`                                             |
+| `0x09` | `C2S_PING`             | 心跳            | `{}`                                             |
+| `0x0A` | `C2S_SPECTATE_LIST`    | 查询进行中房间列表     | `{}`                                             |
+| `0x0B` | `C2S_SPECTATE_JOIN`    | 加入观战          | `{ "room_id": int }`                             |
+| `0x0C` | `C2S_RECONNECT_RESUME` | 断线重连恢复        | `{ "room_id"?: int }`                            |
+| `0x0D` | `C2S_REPLAY_LIST`      | 查询历史回放列表      | `{ "limit"?: int, "offset"?: int }`              |
+| `0x0E` | `C2S_REPLAY_GET`       | 获取单局回放详情      | `{ "replay_id": int }`                           |
+| `0x0F` | `C2S_RANK_LIST`        | 查询排行榜         | `{ "limit"?: int }`                              |
+
 
 ### 4.2 服务端 → 客户端
 
-| TYPE | 名称 | 触发 | data 字段 |
-|---:|---|---|---|
-| `0x65` (101) | `S2C_REGISTER_RESP` | 收到 C2S_REGISTER | `{ "ok": bool, "reason"?: str }` |
-| `0x66` (102) | `S2C_LOGIN_RESP`    | 收到 C2S_LOGIN    | `{ "ok": bool, "reason"?: str, "uid"?: int, "username"?: str, "score"?: int, "total"?: int, "win"?: int }` |
-| `0x67` (103) | `S2C_LOBBY_INFO`    | 大厅在线人数 / 匹配队列变化时推送 | `{ "online": [str], "online_count": int, "queue_size": int }` |
-| `0x68` (104) | `S2C_MATCH_OK`      | 匹配成功 | `{ "room_id": int, "board_size": int, "you": str, "opponent": {"username": str, "score": int}, "your_color": 1\|2, "turn_color": 1\|2 }` |
-| `0x69` (105) | `S2C_MOVE_RESULT`   | 落子反馈 / 房间广播 | `{ "ok": bool, "row": int, "col": int, "color": int, "next_turn": int, "winner": int, "reason"?: str }` |
-| `0x6A` (106) | `S2C_CHAT_BCAST`    | 聊天广播 | `{ "from": str, "text": str }` |
-| `0x6B` (107) | `S2C_ROOM_CLOSED`   | 对局结束 | `{ "reason": str, "your_result": "win"\|"lose"\|"draw"\|"abort" }` |
-| `0x6C` (108) | `S2C_ERROR`         | 业务错误 | `{ "code": str, "reason": str }` |
-| `0x6D` (109) | `S2C_PONG`          | 心跳响应 | `{}` |
-| `0x6E` (110) | `S2C_SPECTATE_LIST` | 返回进行中房间列表 | `{ "rooms": [{ "room_id": int, "black": str, "white": str, "move_count": int, "started_at": int, "observer_count": int }] }` |
-| `0x6F` (111) | `S2C_SPECTATE_SNAPSHOT` | 返回观战快照 | `{ "room_id": int, "black": str, "white": str, "board_size": int, "board": [[int]], "turn_color": 1\|2, "move_count": int, "moves": [...], "chat_log": [...], "ended": bool }` |
-| `0x70` (112) | `S2C_RECONNECT_RESP` | 返回重连恢复结果 | `{ "ok": bool, "reason"?: str, "room_state"?: object }` |
-| `0x71` (113) | `S2C_REPLAY_LIST` | 返回回放列表 | `{ "total": int, "items": [{ "replay_id": int, "players": [str], "winner": int, "result": str, "ended_at": int, "move_count": int }] }` |
-| `0x72` (114) | `S2C_REPLAY_DATA` | 返回单局回放数据 | `{ "ok": bool, "reason"?: str, "replay"?: object }` |
-| `0x73` (115) | `S2C_RANK_LIST` | 返回排行榜 | `{ "items": [{ "rank": int, "username": str, "score": int, "total": int, "win": int }] }` |
+
+| TYPE         | 名称                      | 触发                 | data 字段                                                                                                                                 |
+| ------------ | ----------------------- | ------------------ | --------------------------------------------------------------------------------------------------------------------------------------- |
+| `0x65` (101) | `S2C_REGISTER_RESP`     | 收到 C2S_REGISTER    | `{ "ok": bool, "reason"?: str }`                                                                                                        |
+| `0x66` (102) | `S2C_LOGIN_RESP`        | 收到 C2S_LOGIN       | `{ "ok": bool, "reason"?: str, "uid"?: int, "username"?: str, "score"?: int, "total"?: int, "win"?: int }`                              |
+| `0x67` (103) | `S2C_LOBBY_INFO`        | 大厅在线人数 / 匹配队列变化时推送 | `{ "online": [str], "online_count": int, "queue_size": int }`                                                                           |
+| `0x68` (104) | `S2C_MATCH_OK`          | 匹配成功               | `{ "room_id": int, "board_size": int, "you": str, "opponent": {"username": str, "score": int}, "your_color": 1                          |
+| `0x69` (105) | `S2C_MOVE_RESULT`       | 落子反馈 / 房间广播        | `{ "ok": bool, "row": int, "col": int, "color": int, "next_turn": int, "winner": int, "reason"?: str }`                                 |
+| `0x6A` (106) | `S2C_CHAT_BCAST`        | 聊天广播               | `{ "from": str, "text": str }`                                                                                                          |
+| `0x6B` (107) | `S2C_ROOM_CLOSED`       | 对局结束               | `{ "reason": str, "your_result": "win"                                                                                                  |
+| `0x6C` (108) | `S2C_ERROR`             | 业务错误               | `{ "code": str, "reason": str }`                                                                                                        |
+| `0x6D` (109) | `S2C_PONG`              | 心跳响应               | `{}`                                                                                                                                    |
+| `0x6E` (110) | `S2C_SPECTATE_LIST`     | 返回进行中房间列表          | `{ "rooms": [{ "room_id": int, "black": str, "white": str, "move_count": int, "started_at": int, "observer_count": int }] }`            |
+| `0x6F` (111) | `S2C_SPECTATE_SNAPSHOT` | 返回观战快照             | `{ "room_id": int, "black": str, "white": str, "board_size": int, "board": [[int]], "turn_color": 1                                     |
+| `0x70` (112) | `S2C_RECONNECT_RESP`    | 返回重连恢复结果           | `{ "ok": bool, "reason"?: str, "room_state"?: object }`                                                                                 |
+| `0x71` (113) | `S2C_REPLAY_LIST`       | 返回回放列表             | `{ "total": int, "items": [{ "replay_id": int, "players": [str], "winner": int, "result": str, "ended_at": int, "move_count": int }] }` |
+| `0x72` (114) | `S2C_REPLAY_DATA`       | 返回单局回放数据           | `{ "ok": bool, "reason"?: str, "replay"?: object }`                                                                                     |
+| `0x73` (115) | `S2C_RANK_LIST`         | 返回排行榜              | `{ "items": [{ "rank": int, "username": str, "score": int, "total": int, "win": int }] }`                                               |
+
 
 #### 颜色编码
+
 ```
 0 = 空位 / 无,    1 = 黑棋 (先手),    2 = 白棋 (后手)
 ```
@@ -176,19 +186,21 @@ Payload 是一个 UTF-8 编码的 JSON 对象, 根对象**必须**包含两个�
 
 ## 7. 错误处理 (`S2C_ERROR.code`)
 
-| code | 含义 |
-|---|---|
-| `BAD_FRAME` | 协议格式错 (魔数/版本/JSON/超长), **服务端会立即关闭连接** |
-| `BAD_TYPE`  | TYPE 不在已知集合 |
-| `BAD_ARG`   | data 字段缺失或类型错误 (例如 `row/col` 不是整数) |
-| `NOT_LOGIN` | 登录前发了需要登录的消息 |
-| `IN_ROOM`   | 已在房间中又请求匹配 |
-| `NO_ROOM`   | 不在房间中却发了落子/聊天/离开 |
-| `NO_SUCH_ROOM` | 请求观战的房间不存在 |
-| `RECONNECT_EXPIRED` | 超过重连窗口无法恢复 |
-| `NO_SUCH_REPLAY` | 请求的回放不存在 |
-| `INTERNAL`  | 服务端内部异常 (兜底) |
-| `DISCONNECTED` | (客户端本地伪事件) 网络层告知 GUI 连接已断 |
+
+| code                | 含义                                    |
+| ------------------- | ------------------------------------- |
+| `BAD_FRAME`         | 协议格式错 (魔数/版本/JSON/超长), **服务端会立即关闭连接** |
+| `BAD_TYPE`          | TYPE 不在已知集合                           |
+| `BAD_ARG`           | data 字段缺失或类型错误 (例如 `row/col` 不是整数)    |
+| `NOT_LOGIN`         | 登录前发了需要登录的消息                          |
+| `IN_ROOM`           | 已在房间中又请求匹配                            |
+| `NO_ROOM`           | 不在房间中却发了落子/聊天/离开                      |
+| `NO_SUCH_ROOM`      | 请求观战的房间不存在                            |
+| `RECONNECT_EXPIRED` | 超过重连窗口无法恢复                            |
+| `NO_SUCH_REPLAY`    | 请求的回放不存在                              |
+| `INTERNAL`          | 服务端内部异常 (兜底)                          |
+| `DISCONNECTED`      | (客户端本地伪事件) 网络层告知 GUI 连接已断             |
+
 
 ---
 
@@ -245,4 +257,3 @@ payload : {"seq":0,"data":{"ok":true,"row":7,"col":7,"color":1,"next_turn":2,"wi
   - 后 4 字节大端是 payload 长度;
   - 再后面的字节直接当 UTF-8 文本读, 就是 JSON.
 
-如果想做更精细的解析, 可以写一个 Wireshark Lua dissector (本项目暂未提供, 是后续可拓展工作).

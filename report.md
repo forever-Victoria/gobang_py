@@ -2,9 +2,6 @@
 
 > 课程: 计算机网络  
 > 项目: 自定义应用层协议的联网交互系统  
-> 学生姓名 / 学号:  ___________  
-> 提交日期:  ___________
-
 ---
 
 ## 1. 系统总体架构
@@ -12,27 +9,26 @@
 本项目是一个面向 **C/S (客户端 / 服务端) 架构**的实时联网对战系统, 实现了一个经典的 15×15 五子棋游戏. 它由如下三部分组成:
 
 ```
-+-----------------+       +-------------------+        +-----------------+
-|  Tk Client #1   |       |   GoBang Server   |        |  Tk Client #2   |
-|  (Windows GUI)  |◀════▶ |   (TCP listener)  |◀════▶  |  (Windows GUI)  |
-|                 |       |                   |        |                 |
-| - 登录/大厅/对局│       | - UserManager     |        | - 登录/大厅/对局│
-| - 棋盘 Canvas   │       | - Matcher (线程)  |        | - 棋盘 Canvas   │
-| - 聊天          │       | - RoomManager     |        | - 聊天          │
-| - 后台 recv 线程│       | - 每连接一工作线程│        | - 后台 recv 线程│
-+-----------------+       +-------------------+        +-----------------+
-        ▲                          │
-        │                          ▼
-        │             +---------------------------+
-        │             |  data/users.json (持久化) |
-        │             |  logs/server.log (审计)   |
-        └─── TCP ────▶+---------------------------+
-            自定义 GBP/1 协议帧 (8B header + JSON)
++-----------------+                     +-------------------+                     +-----------------+
+|  Tk Client #1   |◀═══ TCP / GBP/1 ═══▶|   GoBang Server   |◀═══ TCP / GBP/1 ═══▶|  Tk Client #2   |
+|  (Windows GUI)  |   (8B 头 + JSON)   |  (TCP :9527)      |   (8B 头 + JSON)   |  (Windows GUI)  |
+| - 登录/大厅/对局│                     | - UserManager     |                     | - 登录/大厅/对局│
+| - 棋盘 Canvas   |                     | - Matcher (线程)  |                     | - 棋盘 Canvas   |
+| - 聊天          │                     | - RoomManager     |                     | - 聊天          │
+| - 后台 recv 线程│                     | - 每连接一工作线程│                     | - 后台 recv 线程│
++-----------------+                     +---------+---------+                     +-----------------+
+                                                  │
+                                                  │ 读写 (仅服务端)
+                                                  ▼
+                                    +---------------------------+
+                                    |  data/gobang.db (SQLite)  |
+                                    |  logs/server.log          |
+                                    +---------------------------+
 ```
 
-- **客户端**: Python 3 + `tkinter` 桌面 GUI. 单进程内 GUI 主线程负责绘制 / 事件, 后台 `recv` 线程负责从 socket 阻塞读取协议帧, 通过 `queue.Queue` 投递给主线程, 主线程用 `root.after(50ms)` 轮询消费, 保证所有 Tk API 都只在主线程调用.
-- **服务端**: Python 3 标准库实现的多线程 TCP 服务器. `accept()` 主线程 + 每个连接一个工作线程 + 一个匹配后台线程, 共享状态用 `threading.RLock` 保护.
-- **协议**: 自定义二进制 + JSON 复合协议 GBP/1, 详见 `protocol.md`.
+- **客户端**: Python 3 + `tkinter` 桌面 GUI. 单进程内 GUI 主线程负责绘制 / 事件, 后台 `recv` 线程负责从 socket 阻塞读取协议帧, 通过 `queue.Queue` 投递给主线程, 主线程用 `root.after(50ms)` 轮询消费, 保证所有 Tk API 都只在主线程调用. **客户端不访问数据库**, 登录/积分/回放等全部经 TCP 请求由服务端处理.
+- **服务端**: Python 3 标准库实现的多线程 TCP 服务器. `accept()` 主线程 + 每个连接一个工作线程 + 独立 `Matcher` 匹配线程 + 重连看门狗线程, 共享状态用 `threading.RLock` 保护; 唯一读写 `data/gobang.db` 与 `logs/server.log`.
+- **协议**: 自定义 GBP/1 (8 字节定长头 + JSON), **仅用于 Client ↔ Server 的 TCP 连接**, 详见 `protocol.md`.
 
 ---
 
@@ -43,7 +39,7 @@
 | UI 渲染 (登录页 / 大厅 / 棋盘 / 聊天) | ✔ | — |
 | 鼠标点击 → 落子坐标计算 | ✔ | — |
 | 发送 `C2S_*` 请求 | ✔ | — |
-| 用户表持久化 (`users.json`) | — | ✔ |
+| 用户表持久化 (SQLite `data/gobang.db`) | — | ✔ |
 | 用户名/密码哈希校验 | — | ✔ |
 | 在线表 `_online: username -> conn` | — | ✔ |
 | 匹配队列 / 配对算法 | — | ✔ |
@@ -198,46 +194,75 @@
 
 ### 8.2 一次完整交互的报文序列
 
+抓包文件: `captures/gobang_session.pcapng`. 环境为 **Loopback** (`127.0.0.1`), 服务端端口 **9527**, 客户端 `ali` 使用临时端口 **60404**, 对手 `bbb` 使用 **58442**. 下列帧号均来自该文件.
+
+**TCP 建连 + 注册/登录 (客户端 60404)**
+
 ```
-Frame 1   alice  -> server   TCP SYN                    三次握手
-Frame 2   server -> alice    TCP SYN, ACK
-Frame 3   alice  -> server   TCP ACK
-Frame 4   alice  -> server   PSH,ACK len=64  ← GBP/1 C2S_REGISTER {"username":"alice",...}
-Frame 5   server -> alice    PSH,ACK len=37  ← GBP/1 S2C_REGISTER_RESP {"ok":true}
-Frame 6   alice  -> server   PSH,ACK len=64  ← GBP/1 C2S_LOGIN
-Frame 7   server -> alice    PSH,ACK len=128 ← GBP/1 S2C_LOGIN_RESP {"ok":true,"uid":1,...}
-Frame 8   bob    -> server   (类似 1-7)
-...
-Frame N   alice  -> server   PSH,ACK len=40  ← GBP/1 C2S_MOVE {"row":7,"col":7}
-Frame N+1 server -> alice    PSH,ACK len=108 ← GBP/1 S2C_MOVE_RESULT {"winner":0,...}
-Frame N+2 server -> bob      PSH,ACK len=108 ← 同上 (广播)
-...
-Frame M   server -> alice    PSH,ACK len=72  ← S2C_ROOM_CLOSED {"your_result":"win"}
-Frame M+1 server -> bob      PSH,ACK len=74  ← S2C_ROOM_CLOSED {"your_result":"lose"}
+Frame 1    60404 -> 9527   [SYN]                         三次握手
+Frame 2    9527  -> 60404  [SYN, ACK]
+Frame 3    60404 -> 9527   [ACK]
+Frame 4    60404 -> 9527   [PSH, ACK]  tcp.payload=66   GBP/1 C2S_REGISTER
+                                              {"seq":1,"data":{"username":"aaa","password":"pw1"}}
+Frame 5    9527  -> 60404  [ACK]         (纯确认, 无应用数据)
+Frame 6    9527  -> 60404  [PSH, ACK]  tcp.payload=76   S2C_REGISTER_RESP
+                                              {"seq":1,"data":{"ok":false,"reason":"用户名已被占用"}}
+Frame 8    60404 -> 9527   [PSH, ACK]  tcp.payload=66   C2S_REGISTER
+                                              {"seq":2,"data":{"username":"ali","password":"pw1"}}
+Frame 10   9527  -> 60404  [PSH, ACK]  tcp.payload=40   S2C_REGISTER_RESP {"seq":2,"data":{"ok":true}}
+Frame 12   60404 -> 9527   [PSH, ACK]  tcp.payload=66   C2S_LOGIN
+                                              {"seq":3,"data":{"username":"ali","password":"pw1"}}
+Frame 14   9527  -> 60404  [PSH, ACK]  tcp.payload=106  S2C_LOGIN_RESP
+                                              {"seq":3,"data":{"ok":true,"uid":3,"username":"ali","score":1000,...}}
+Frame 16   9527  -> 60404  [PSH, ACK]  tcp.payload=103  S2C_LOBBY_INFO (推送在线人数)
 ```
+
+**匹配 + 首手落子 + 广播**
+
+```
+Frame 47   60404 -> 9527   [PSH, ACK]  tcp.payload=30   C2S_MATCH_START {"seq":5,"data":{}}
+Frame 51   9527  -> 60404  [PSH, ACK]  tcp.payload=156  S2C_MATCH_OK (room_id=1, ali vs bbb)
+Frame 53   60404 -> 9527   [PSH, ACK]  tcp.payload=48   C2S_MOVE {"seq":6,"data":{"row":7,"col":7}}
+Frame 55   9527  -> 60404  [PSH, ACK]  tcp.payload=101  S2C_MOVE_RESULT (winner=0, next_turn=2)
+Frame 57   9527  -> 58442  [PSH, ACK]  tcp.payload=101  S2C_MOVE_RESULT (同上, 广播给对手)
+```
+
+**终局**
+
+```
+Frame 226  60404 -> 9527   [PSH, ACK]  tcp.payload=49   C2S_MOVE {"seq":16,"data":{"row":6,"col":9}}
+Frame 228  9527  -> 60404  [PSH, ACK]  tcp.payload=101  S2C_MOVE_RESULT (winner=1, 黑胜)
+Frame 234  9527  -> 60404  [PSH, ACK]  tcp.payload=76   S2C_ROOM_CLOSED
+                                              {"reason":"五子连珠","your_result":"win"}
+```
+
+整次抓包共 394 帧, 除上述联机对局外, 还包含第三客户端 `ccc` 登录、大厅聊天 (`C2S_CHAT` / `S2C_CHAT_BCAST`) 及断连 `[FIN, ACK]` 等, 过滤 `tcp.port == 9527` 后可逐项对照.
 
 ### 8.3 字段对照 (Hex Dump 验证)
 
-随便选 Frame 4 (Register Request) 的 TCP payload 部分:
+以 **Frame 4** (`60404 → 9527`, 注册请求) 的 TCP Segment Data 为例 (总长 66 字节):
 
 ```
-0000  47 42 01 01 00 00 00 38  7b 22 73 65 71 22 3a 31   GB.....8{"seq":1
-0010  2c 22 64 61 74 61 22 3a  7b 22 75 73 65 72 6e 61   ,"data":{"userna
-0020  6d 65 22 3a 22 61 6c 69  63 65 22 2c 22 70 61 73   me":"alice","pas
-0030  73 77 6f 72 64 22 3a 22  70 77 31 22 7d 7d         sword":"pw1"}}
+0000  47 42 01 01 00 00 00 3a  7b 22 73 65 71 22 3a 20   GB.....:{"seq": 
+0010  31 2c 20 22 64 61 74 61  22 3a 20 7b 22 75 73 65   1, "data": {"use
+0020  72 6e 61 6d 65 22 3a 20  22 61 61 61 22 2c 20 22   rname": "aaa", "
+0030  70 61 73 73 77 6f 72 64  22 3a 20 22 70 77 31 22   password": "pw1"
+0040  7d 7d                                            }}
 ```
 
-- `47 42` = ASCII "GB" → 协议魔数, **与 `protocol.md` §2 完全吻合**;
-- `01` = 协议版本号;
+- `47 42` = ASCII `GB` → 协议魔数, 与 `protocol.md` §2 一致;
+- `01` = 协议版本 `GBP/1`;
 - `01` = TYPE = `C2S_REGISTER`;
-- `00 00 00 38` = 大端 0x38 = 56 字节, 与后面的 JSON 长度一致;
-- 剩余字节直接是明文 JSON, 印证 §3 的 payload 格式.
+- `00 00 00 3a` = 大端 **0x3a (58)** → 后续 JSON payload 恰好 58 字节;
+- 明文 JSON: `{"seq": 1, "data": {"username": "aaa", "password": "pw1"}}`, 印证 §3 的 `{seq, data}` 结构.
 
-### 8.4 截图清单 (附在 demo/ 下)
+### 8.4 抓包截图说明
 
-- `demo/wireshark_filter.png` — 过滤 `tcp.port==9527` 的全部包列表
-- `demo/wireshark_frame_register.png` — Frame 4 的 Hex 分解
-- `demo/wireshark_move_broadcast.png` — 一手棋触发的 2 个对称广播帧
+报告附图来自 Wireshark 打开 `captures/gobang_session.pcapng` 的实机截图, 建议包含:
+
+- 过滤 `tcp.port == 9527` 后的包列表 (可见 `127.0.0.1:60404 ↔ 127.0.0.1:9527`);
+- **Frame 4** 展开 TCP Segment Data 的 Hex/ASCII 对照 (可见 `GB` 头与 JSON);
+- **Frame 53 / 55 / 57** 一手落子后服务端向双方各发一条 `S2C_MOVE_RESULT` 的广播.
 
 ---
 
@@ -286,25 +311,42 @@ ALL SMOKE TESTS PASSED [OK]
 
 ## 10. 新增扩展功能实现
 
+课程文档列出的 9 个「扩展方向」全部实现, 外加 SQLite 持久化共 10 项, 概述如下。
+
 ### 10.1 观战模式
-- 服务端在 `Room` 中维护 `observers` 集合;
-- 大厅推送进行中房间摘要, 观战者可按 `room_id` 加入;
-- 观战者接收落子/聊天/结束广播, 但不能发起落子。
+`Room.observers` 集合 + 大厅进行中房间摘要广播, 观战者按 `room_id` 加入, 只收不发。
 
-### 10.2 断线重连 (60 秒)
-- 服务端维护 `pending_reconnect` 表 (`username -> room_id, deadline`);
-- 对局中断线不立即判负, 先进入待恢复窗口;
-- 同账号重登后可恢复原局棋盘快照与回合;
-- 超时未恢复按离开判负并结算积分。
+### 10.2 游戏内聊天
+房间内通过 `C2S_CHAT` / `S2C_CHAT` 双向广播, 复用既有 TCP 连接, 观战者只读。
 
-### 10.3 历史回放
-- 服务端新增 `ReplayStore`, 持久化到 `data/replays.json`;
-- 每局结束记录 `players/winner/start/end/moves[]`;
-- 客户端可查询回放列表并拉取单局详情进行逐步回放。
+### 10.3 断线重连 (60 秒)
+`pending_reconnect` 表保存 `username → room_id, deadline`, 同账号重登在窗口期内可恢复棋盘快照与回合, 超时按离开判负。
 
-### 10.4 排行榜 UI
-- 服务端按 `score desc, win desc` 计算 TopN;
-- 客户端大厅使用表格展示 `rank/username/score/win/total`。
+### 10.4 对局回放
+`ReplayStore` 落盘到 SQLite, 每局记录 `players / winner / start / end / moves[]`, 客户端支持首步 / 上一步 / 下一步 / 末步逐手回放。
+
+### 10.5 排行榜
+服务端按 `score desc, win desc` 排序返回 TopN, 客户端大厅表格展示 `rank / username / score / win / total`。
+
+### 10.6 AI 对战
+服务端 `src/server/ai_player.py` 中的 `GobangAI` 在权威棋盘上计算下一步, 不直接修改房间状态. 客户端发 `C2S_AI_MATCH_START` 开局, 服务端创建 `AI-Bot#N` 虚拟对手房间 (当前玩家固定执黑先行); 玩家落子后 `_maybe_ai_move()` 在轮到 AI 时调用 `choose_move()`, 再经 `room.place()` 与 `S2C_MOVE_RESULT` 广播, 判胜逻辑与联机对局一致.
+
+**落子策略** (规则型启发式, 纯标准库):
+1. 己方能一手成五则直接下;
+2. 否则若对手下一手能成五则堵;
+3. 否则在已有棋子周围 2 格内的空位中, 按连子长度与开口数评分, 综合进攻/防守分与距棋盘中心距离选点.
+
+### 10.7 多房间并发
+`RoomManager` 用 `Dict[room_id, Room]` 管理活跃房间, 单实例支持任意数量房间并行, 共享结构用 `threading.RLock` 保护。
+
+### 10.8 服务端监控面板
+`src/server/monitor.py` (Tkinter), 同进程承载 `GoBangServer` 并周期采样, 展示在线连接 / 在线玩家 / 进行中房间 / 匹配队列 / 待重连 / 累计落子等指标, 只读不修改状态, 一键 `run_server_monitor.bat` 启动。
+
+### 10.9 云服务器部署
+服务端跑在**腾讯云 CVM**, 公网 `140.143.202.203:9527`, 安全组放行 9527/tcp, 客户端把 host 改成该地址即可联机, 全链路已用 Wireshark 抓包验证。
+
+### 10.10 SQLite 持久化 (附加)
+标准库 `sqlite3`, 数据库 `data/gobang.db` 自动建表 (`users` / `replays` / `pending_reconnect`), 兼容旧版本 `users.json` / `replays.json` 首次启动自动迁移。
 
 ---
 
@@ -312,15 +354,11 @@ ALL SMOKE TESTS PASSED [OK]
 
 | 不足 | 改进思路 |
 |---|---|
-| 用户表用 JSON 文件存, 写入需要全文件 rewrite, 不适合上千用户 | 接入 SQLite (Python 标准库自带), 仅需替换 `UserManager` 即可 |
 | 匹配是 FIFO, 没有按积分分档 (原项目按 score 分了三档) | 增加 3 个 deque, 按 score 区间路由 |
-| 客户端断线后没有 "重连恢复" — 重新登录后房间已销毁 | 把 `username -> room` 的映射保留 N 秒, 重连时如果 N 秒内, 把新 socket 绑回原 room |
-| 没有观战模式 | 给 room 增加 `observers: List[Connection]`, 落子时一起广播 |
-| 没有排行榜 UI | 增加 `C2S_TOPN` 消息, 服务端按 score 排序返回 top 20 |
-| 没有 AI 对手 | 单机 AI 可在客户端实现 (alpha-beta 剪枝); 联网 AI 则在服务端跑 |
+| AI 为规则型启发式, 无难度档位, 棋力中等 | 可增加 minimax 搜索、难度档位或执白选项 |
 | 没有 Wireshark Lua dissector | 写一个 `.lua` 文件按 `protocol.md` 解协议, 抓包时直接显示 "MsgType: C2S_MOVE row=7 col=7" |
 | 协议未加密 | 接 TLS (Python ssl 模块), 或在 GBP/1 之上加 AES |
-| 没有云部署 | 用 `pyinstaller` 把服务端打成 exe, 或者 docker 化 |
+| 云部署只放了单机服务端进程, 无负载均衡 / 多实例 | 接 nginx stream 模块 + 多服务端实例, 或 docker-compose |
 
 以上扩展方向均可作为后续工作.
 
